@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import json
 
 """
 NLP A2: N-Gram Language Models
@@ -10,11 +11,13 @@ DO NOT SHARE/DISTRIBUTE SOLUTIONS WITHOUT THE INSTRUCTOR'S PERMISSION
 
 word_index_dict = {}
 
-# TODO: read brown_vocab_100.txt into word_index_dict
-
-# TODO: write word_index_dict to word_to_index_100.txt
-
-
+# Read the text file and create a dictionary with the words as keys and the indices as values
+with open("brown_vocab_100.txt", "r") as f:
+    for i, line in enumerate(f):
+        word_index_dict[line.rstrip()] = i
+# Write the dictionary to a text file
+with open("word_to_index_100.txt", "w") as f:
+    json.dump(word_index_dict, f, indent=4)
 
 print(word_index_dict['all'])
 print(word_index_dict['resolution'])
