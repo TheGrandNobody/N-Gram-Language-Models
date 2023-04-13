@@ -27,7 +27,7 @@ def main():
     pos_fdist = FreqDist([p[1] for p in pos])
     most_frequent = pos_fdist.most_common(10)
 
-    # Simultaneously plot the frequency distribution of the corpus, news genre and romance on both linear and log-log scale using matplotlib
+    # Plot the frequency distribution of the corpus, news genre and romance on both linear and log-log scale
     title = ["Linear F. Distribution: ", "Log-Log F. Distribution: "]
     genre = ["Corpus", "News", "Romance"]
     fig, axs = plt.subplots(2, 3)
