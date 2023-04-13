@@ -27,6 +27,13 @@ def main():
     pos_fdist = FreqDist([p[1] for p in pos])
     most_frequent = pos_fdist.most_common(10)
 
+    print("Number of tokens: ", tokens)
+    print("Number of types: ", types)
+    print("Number of words: ", words)
+    print("Average number of words per sentence: ", avg_words)
+    print("Average word length: ", avg_word_length)
+    print("10 most frequent parts of speech: ", most_frequent)
+
     # Plot the frequency distribution of the corpus, news genre and romance on both linear and log-log scale
     title = ["Linear F. Distribution: ", "Log-Log F. Distribution: "]
     genre = ["Corpus", "News", "Romance"]
