@@ -18,7 +18,7 @@ vocab = open("brown_vocab_100.txt")
 word_index_dict = {}
 for i, line in enumerate(vocab):
     #TODO: import part 1 code to build dictionary
-
+    
 f = open("brown_100.txt")
 
 counts = #TODO: initialize counts to a zero vector
