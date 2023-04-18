@@ -3,24 +3,25 @@ nltk.download('brown')
 nltk.download('averaged_perceptron_tagger')
 from nltk import FreqDist, corpus
 import matplotlib.pyplot as plt
+import string
 
 def main():
     # Compute a frequency distribution of the whole corpus
-    fdist = FreqDist(corpus.brown.words())
+    fdist = FreqDist(w for w in corpus.brown.words() if w not in string.punctuation)
     # Compute a frequency distribution of the genre "news"
-    fdist_news = FreqDist(corpus.brown.words(categories="news"))
+    fdist_news = FreqDist(w for w in corpus.brown.words(categories="news") if w not in string.punctuation)
     # Compute a frequency distribution of the genre "romance"
-    fdist_romance = FreqDist(corpus.brown.words(categories="romance"))
+    fdist_romance = FreqDist(w for w in corpus.brown.words(categories="romance") if w not in string.punctuation)
     # Count the number of tokens in corpus
-    tokens = sum(fdist.values())
+    tokens = sum(FreqDist(corpus.brown.words()).values())
     # Count the number of types in corpus
     types = len(fdist)
-    # Count the number of words in corpus
-    words = len(nltk.tokenize.TreebankWordDetokenizer().detokenize(corpus.brown.words()))
+    # Count the total number of words in the corpus
+    words = len([w for w in corpus.brown.words() if w not in string.punctuation])
     # Count the average number of words per sentence
     avg_words = words / len(corpus.brown.sents())
     # Count the average word length
-    avg_word_length = sum([len(w) for w in fdist.keys()]) / types
+    avg_word_length = sum([len(w) for w in corpus.brown.words() if w not in string.punctuation]) / types
 
     # Count the 10 most frequent parts of speech in the dataset
     pos = nltk.pos_tag(corpus.brown.words())
@@ -29,7 +30,7 @@ def main():
 
     print("Number of tokens: ", tokens)
     print("Number of types: ", types)
-    print("Number of words: ", words)
+    print("Total number of words: ", words)
     print("Average number of words per sentence: ", avg_words)
     print("Average word length: ", avg_word_length)
     print("10 most frequent parts of speech: ", most_frequent)
