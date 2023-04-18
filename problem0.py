@@ -13,7 +13,7 @@ def main():
     # Compute a frequency distribution of the genre "romance"
     fdist_romance = FreqDist(w for w in corpus.brown.words(categories="romance") if w not in string.punctuation)
     # Count the number of tokens in corpus
-    tokens = sum(FreqDist(corpus.brown.words()).values())
+    tokens = len(corpus.brown.words())
     # Count the number of types in corpus
     types = len(fdist)
     # Count the total number of words in the corpus
