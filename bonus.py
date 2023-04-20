@@ -38,6 +38,8 @@ if __name__ == "__main__":
     # Count the occurence of each word pair in the corpus that has a frequency of 10 or more
     pfdist = defaultdict(int)
     for i in range(len(brown) - 1):
+        # We use the whole corpus (with punctuation) to maintain the natural order of words
+        # A word at the end of a sentence is not considered paired with the word at the beginning of the next sentence
         if check_punct(brown[i]) and check_punct(brown[i + 1]) and fdist[brown[i]] > 9 and fdist[brown[i + 1]] > 9:
             pfdist[f"{brown[i]} {brown[i + 1]}"] += 1
     # Calculate the pmi for each word pair in pfdist
