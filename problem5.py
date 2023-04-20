@@ -19,7 +19,7 @@ def get_unigram_p(unigram: str, word_index_dict: dict, sentences: list, smoothed
 
     smoothing = np.full(shape=len(counts), fill_value=0.1, dtype=np.float64) if smoothed else np.zeros(len(counts))
     # Normalize and writeout counts. 
-    probs = (counts + smoothing) / np.sum(counts)
+    probs = (counts + smoothing) / (np.sum(counts) * 1.1)
 
     return probs[word_index_dict[unigram]]
 

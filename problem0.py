@@ -5,23 +5,34 @@ from nltk import FreqDist, corpus
 import matplotlib.pyplot as plt
 import string
 
+def check_punct(word: str) -> bool:
+    """ Checks if a given word is punctuation or made up of punctuation.
+
+    Args:
+        word (str): The specified word
+
+    Returns:
+        bool: True if the word is not punctuation and is not made up of punctuation, False otherwise.
+    """
+    return word not in string.punctuation and len([1 for c in word if c in string.punctuation]) != len(word)
+
 def main():
     # Compute a frequency distribution of the whole corpus
-    fdist = FreqDist(w for w in corpus.brown.words() if w not in string.punctuation)
+    fdist = FreqDist(w for w in corpus.brown.words() if check_punct(w))
     # Compute a frequency distribution of the genre "news"
-    fdist_news = FreqDist(w for w in corpus.brown.words(categories="news") if w not in string.punctuation)
+    fdist_news = FreqDist(w for w in corpus.brown.words(categories="news") if check_punct(w))
     # Compute a frequency distribution of the genre "romance"
-    fdist_romance = FreqDist(w for w in corpus.brown.words(categories="romance") if w not in string.punctuation)
+    fdist_romance = FreqDist(w for w in corpus.brown.words(categories="romance") if check_punct(w))
     # Count the number of tokens in corpus
     tokens = len(corpus.brown.words())
     # Count the number of types in corpus
     types = len(fdist)
     # Count the total number of words in the corpus
-    words = len([w for w in corpus.brown.words() if w not in string.punctuation])
+    words = len([w for w in corpus.brown.words() if check_punct(w)])
     # Count the average number of words per sentence
     avg_words = words / len(corpus.brown.sents())
     # Count the average word length
-    avg_word_length = sum([len(w) for w in corpus.brown.words() if w not in string.punctuation]) / types
+    avg_word_length = sum([len(w) for w in corpus.brown.words() if check_punct(w)]) / types
 
     # Count the 10 most frequent parts of speech in the dataset
     pos = nltk.pos_tag(corpus.brown.words())
