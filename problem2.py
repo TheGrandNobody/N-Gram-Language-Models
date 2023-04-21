@@ -13,35 +13,35 @@ import numpy as np
 from generate import GENERATE
 
 if __name__ == "__main__":
-    # load the indices dictionary
+    # Load the indices dictionary
     word_index_dict = {}
     with open("brown_vocab_100.txt", "r") as f:
         for i, line in enumerate(f):
             word_index_dict[line.rstrip()] = i
 
-    # load all sentences
+    # Load all sentences
     with open("brown_100.txt", "r") as f:
         sentences = f.read().splitlines()
 
-    # initialize counts to a zero vector
+    # Initialize counts to a zero vector
     counts = np.zeros(len(word_index_dict.keys())) 
 
-    # iterate through file and update counts
+    # Iterate through file and update counts
     for sen in sentences:
         words = sen.lower().strip().split(" ")
         for word in words:
             counts[word_index_dict[word]] += 1
 
-    # normalize and writeout counts. 
+    #  Normalize and writeout counts. 
     probs = counts / np.sum(counts)
 
-    # write probs as a dict into a text file
+    # Write probs as a dict into a text file
     word_probs_dict = {}
     for word in word_index_dict:
         word_probs_dict[word] = probs[word_index_dict[word]]
     with open("unigram_probs.txt", "w") as f:
         json.dump(word_probs_dict, f, indent=4)
 
-    # verification
+    # Verify that the dictionary was created correctly
     print("%.8f" % word_probs_dict["all"])
     print("%.8f" % word_probs_dict["resolution"])

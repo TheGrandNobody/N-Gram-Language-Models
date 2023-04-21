@@ -19,6 +19,7 @@ if __name__ == "__main__":
     with open("word_to_index_100.txt", "w") as f:
         json.dump(word_index_dict, f, indent=4)
 
+    # Verify that the dictionary was created correctly
     print(word_index_dict['all'])
     print(word_index_dict['resolution'])
     print(len(word_index_dict))
