@@ -42,6 +42,6 @@ if __name__ == "__main__":
         print(probs[word_index_dict["anonymous"],word_index_dict["calls"]], file=f1)
 
     # Generate 10 sentences.
-    sents = [GENERATE(word_index_dict, probs, "bigram", randint(5, 35), "<s>") + "\n" for _ in range(10)]
+    sents = [GENERATE(word_index_dict, probs, "bigram", randint(5, 50), "<s>") + "\n" for _ in range(10)]
     with open("bigram_generation.txt", "w") as f:
         f.writelines(sents)

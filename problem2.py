@@ -48,6 +48,6 @@ if __name__ == "__main__":
     print("%.8f" % word_probs_dict["resolution"])
 
     # Generate 10 sentences.
-    sents = [GENERATE(word_index_dict, word_probs_dict.values(), "unigram", randint(5, 35), "<s>") + "\n" for _ in range(10)]
+    sents = [GENERATE(word_index_dict, word_probs_dict.values(), "unigram", randint(5, 50), "<s>") + "\n" for _ in range(10)]
     with open("unigram_generation.txt", "w") as f:
         f.writelines(sents)
