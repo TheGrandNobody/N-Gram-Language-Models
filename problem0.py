@@ -17,24 +17,24 @@ def check_punct(word: str) -> bool:
     return word not in string.punctuation and len([1 for c in word if c in string.punctuation]) != len(word)
 
 def main():
-    # Compute a frequency distribution of the whole corpus
+    # Compute a frequency distribution of the whole corpus.
     fdist = FreqDist(w for w in corpus.brown.words() if check_punct(w))
-    # Compute a frequency distribution of the genre "news"
+    # Compute a frequency distribution of the genre "news".
     fdist_news = FreqDist(w for w in corpus.brown.words(categories="news") if check_punct(w))
-    # Compute a frequency distribution of the genre "romance"
+    # Compute a frequency distribution of the genre "romance".
     fdist_romance = FreqDist(w for w in corpus.brown.words(categories="romance") if check_punct(w))
-    # Count the number of tokens in corpus
+    # Count the number of tokens in corpus.
     tokens = len(corpus.brown.words())
-    # Count the number of types in corpus
+    # Count the number of types in corpus.
     types = len(fdist)
-    # Count the total number of words in the corpus
+    # Count the total number of words in the corpus.
     words = len([w for w in corpus.brown.words() if check_punct(w)])
-    # Count the average number of words per sentence
+    # Count the average number of words per sentence.
     avg_words = words / len(corpus.brown.sents())
     # Count the average word length
     avg_word_length = sum([len(w) for w in corpus.brown.words() if check_punct(w)]) / types
 
-    # Count the 10 most frequent parts of speech in the dataset
+    # Count the 10 most frequent parts of speech in the dataset.
     pos = nltk.pos_tag(corpus.brown.words())
     pos_fdist = FreqDist([p[1] for p in pos])
     most_frequent = pos_fdist.most_common(10)
@@ -46,7 +46,7 @@ def main():
     print("Average word length: ", avg_word_length)
     print("10 most frequent parts of speech: ", most_frequent)
 
-    # Plot the frequency distribution of the corpus, news genre and romance on both linear and log-log scale
+    # Plot the frequency distribution of the corpus, news genre and romance on both linear and log-log scale.
     genre = ["Corpus", "News", "Romance"]
     fig, axs = plt.subplots(2, 3)
     for i in range(2):
