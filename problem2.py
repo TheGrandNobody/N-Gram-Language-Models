@@ -11,6 +11,7 @@ DO NOT SHARE/DISTRIBUTE SOLUTIONS WITHOUT THE INSTRUCTOR'S PERMISSION
 import json
 import numpy as np
 from generate import GENERATE
+from random import randint
 
 if __name__ == "__main__":
     # Load the indices dictionary
@@ -45,3 +46,8 @@ if __name__ == "__main__":
     # Verify that the dictionary was created correctly
     print("%.8f" % word_probs_dict["all"])
     print("%.8f" % word_probs_dict["resolution"])
+
+    # Generate 10 sentences
+    sents = [GENERATE(word_index_dict, word_probs_dict.values(), "unigram", randint(5, 35), "<s>") + "\n" for _ in range(10)]
+    with open("unigram_generation.txt", "w") as f:
+        f.writelines(sents)
