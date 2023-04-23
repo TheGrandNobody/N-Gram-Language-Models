@@ -42,11 +42,6 @@ if __name__ == "__main__":
         print(probs[word_index_dict["the"],word_index_dict["campaign"]], file=f1)
         print(probs[word_index_dict["anonymous"],word_index_dict["calls"]], file=f1)
 
-    # Generate 10 sentences.
-    sents = [GENERATE(word_index_dict, probs, "bigram", randint(5, 50), "<s>") + "\n" for _ in range(10)]
-    with open("bigram_generation.txt", "w") as f:
-        f.writelines(sents)
-
     # Calculating sentence probabilities and perplexities.
     with open("toy_corpus.txt", "r") as f:
         sentences = f.read().splitlines()
@@ -69,4 +64,9 @@ if __name__ == "__main__":
     print(perplexities)
     with open("bigram_eval.txt", "w") as f:
         f.writelines([str(p) + "\n" for p in perplexities])
+        
+    # Generate 10 sentences.
+    sents = [GENERATE(word_index_dict, probs, "bigram", randint(5, 50), "<s>") + "\n" for _ in range(10)]
+    with open("bigram_generation.txt", "w") as f:
+        f.writelines(sents)
 

@@ -60,11 +60,6 @@ if __name__ == "__main__":
     print("Difference in probabilibites: ", np.subtract(unsmooth_probs, smooth_probs))
     print("Unsmoothed probabilities are higher than smoothed probabilities")
 
-    # Generate 10 sentences.
-    sents = [GENERATE(word_index_dict, probs, "bigram", randint(5, 50), "<s>") + "\n" for _ in range(10)]
-    with open("smoothed_generation.txt", "w") as f:
-        f.writelines(sents)
-
     # Calculating sentence probabilities and perplexities.
     with open("toy_corpus.txt", "r") as f:
         sentences = f.read().splitlines()
@@ -87,3 +82,8 @@ if __name__ == "__main__":
     print(perplexities)
     with open("smoothed_eval.txt", "w") as f:
         f.writelines([str(p) + "\n" for p in perplexities])
+
+    # Generate 10 sentences.
+    sents = [GENERATE(word_index_dict, probs, "bigram", randint(5, 50), "<s>") + "\n" for _ in range(10)]
+    with open("smoothed_generation.txt", "w") as f:
+        f.writelines(sents)
