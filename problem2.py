@@ -47,7 +47,7 @@ if __name__ == "__main__":
     print("%.8f" % word_probs_dict["all"])
     print("%.8f" % word_probs_dict["resolution"])
 
-    # Calculating sentence probabilities and perplexities.
+    # Calculate sentence probabilities and perplexities.
     with open("toy_corpus.txt", "r") as f:
         sentences = f.read().splitlines()
     sentprobs, perplexities = [], []

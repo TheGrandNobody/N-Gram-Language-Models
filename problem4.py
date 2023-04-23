@@ -68,13 +68,12 @@ if __name__ == "__main__":
 
     sentprobs, perplexities = [], []
     for sent in sentences:
-        sentprob = 1
         words = sent.lower().strip().split(" ")
         for i in range(len(words)):
             if i==0:
-                sentprob *= word_probs_dict[words[i]]
+                sentprob = word_probs_dict[words[0]]
             else:
-                sentprob *= probs[word_index_dict[words[i-1]], word_index_dict[words[i]]]
+                sentprob *= probs[word_index_dict[words[i - 1]], word_index_dict[words[i]]]
         sentprobs.append(sentprob)
         perplexities.append(1/(pow(sentprob, 1.0/len(words))))
         
