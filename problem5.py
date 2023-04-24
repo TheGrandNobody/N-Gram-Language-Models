@@ -1,60 +1,67 @@
 import numpy as np
 
-def get_unigram_p(unigram: str, word_index_dict: dict, sentences: list, smoothed: bool):
-    """ Get the probability of a unigram given a unigram string.
+def calculate_trigram(trigram_phrase, corpus, vocab_length, alpha=0.0):
 
-    Args:
-        word_index_dict (dict): The dictionary of words and their indices.
-        sentences (list): The list of sentences.
-        smoothed (bool): Whether the probability should be smoothed or not.
-    """
-    # Initialize counts to a zero vector
-    counts = np.zeros(len(word_index_dict.keys())) 
 
-    # Iterate through file and update counts
-    for sen in sentences:
-        words = sen.lower().strip().split(" ")
-        for word in words:
-            counts[word_index_dict[word]] += 1
+    word1, word2, word3 = trigram_phrase.split()
 
-    smoothing = np.full(shape=len(counts), fill_value=0.1, dtype=np.float64) if smoothed else np.zeros(len(counts))
-    # Normalize and writeout counts. 
-    probs = (counts + smoothing) / (np.sum(counts) * 1.1)
 
-    return probs[word_index_dict[unigram]]
+    first_two_words_count = alpha
+    last_word_count = alpha
 
-def get_bigram_p(bigram:str, word_index_dict:dict, sentences: list, smoothed: bool):
-    """ Get the probability of a bigram given a bigram string.
+    for sentence in corpus:
+        sentence = sentence.lower().strip().split(" ")
+        for i in range(len(sentence) - 2):
+            if sentence[i] == word1 and sentence[i+1] == word2:
+                first_two_words_count += 1
+                if sentence[i+2] == word3:
+                    last_word_count += 1
 
-    Args:
-        bigram (str): The bigram string.
-        word_index_dict (dict): The dictionary of words and their indices.
-        sentences (list): The list of sentences.
-        smoothed (bool): Whether the probability should be smoothed or not.
-    """
+    trigram_probability = last_word_count / (first_two_words_count + vocab_length * alpha)
 
-def get_trigram_p(trigram: str, word_index_dict:dict, sentences: list, smoothed: bool):
-    """ Get the probability of a trigram given a trigram string.
-
-    Args:
-        word_index_dict (dict): The dictionary of words and their indices.
-        sentences (list): The list of sentences.
-    """
-    words = trigram.split(" ")
-    p_AB = get_bigram_p(words[0] + " " + words[1], word_index_dict, sentences, smoothed)
-    p_BC = get_bigram_p(words[1] + " " + words[2], word_index_dict, sentences, smoothed)
-    p_B = get_unigram_p(words[1], word_index_dict, sentences, smoothed)
-    return p_AB * p_BC / p_B 
+    return trigram_probability
 
 
 if __name__ == "__main__":
     # Load the indices dictionary
-    word_index_dict = {}
-    with open("brown_vocab_100.txt", "r") as f:
-        for i, line in enumerate(f):
-            word_index_dict[line.rstrip()] = i
-    # Load all sentences
     with open("brown_100.txt", "r") as f:
         sentences = f.read().splitlines()
 
-    
+    with open("brown_vocab_100.txt", "r") as f:
+        vocab_length = len(f.read().splitlines())
+
+    probablity = calculate_trigram("in the past", sentences, vocab_length, alpha=0)
+    print("Probability of 'in the past' without smoothing is: ", probablity)
+
+    probablity = calculate_trigram("in the past", sentences, vocab_length, alpha = 0.1)
+    print("Probability of 'in the past' with smoothing of 0.1 is: ", probablity)
+
+    probablity = calculate_trigram("in the time", sentences, vocab_length, alpha=0)
+    print("Probability of 'in the time' without smoothing is: ", probablity)
+
+    probablity = calculate_trigram("in the time", sentences, vocab_length, alpha = 0.1)
+    print("Probability of 'in the time' with smoothing of 0.1 is: ", probablity)
+
+    probablity = calculate_trigram("the jury said", sentences, vocab_length, alpha=0)
+    print("Probability of 'the jury said' without smoothing is: ", probablity)
+
+    probablity = calculate_trigram("the jury said", sentences, vocab_length, alpha = 0.1)
+    print("Probability of 'the jury said' with smoothing of 0.1 is: ", probablity)
+
+    probablity = calculate_trigram("the jury recommended", sentences, vocab_length, alpha=0)
+    print("Probability of 'the jury recommended' without smoothing is: ", probablity)
+
+    probablity = calculate_trigram("the jury recommended", sentences, vocab_length, alpha = 0.1)
+    print("Probability of 'the jury recommended' with smoothing of 0.1 is: ", probablity)
+
+    probablity = calculate_trigram("jury said that", sentences, vocab_length, alpha=0)
+    print("Probability of 'jury said that' without smoothing is: ", probablity)
+
+    probablity = calculate_trigram("jury said that", sentences, vocab_length, alpha = 0.1)
+    print("Probability of 'jury said that' with smoothing of 0.1 is: ", probablity)
+
+    probablity = calculate_trigram("agriculture teacher ,", sentences, vocab_length, alpha=0)
+    print("Probability of 'agriculture teacher ,' without smoothing is: ", probablity)
+
+    probablity = calculate_trigram("agriculture teacher ,", sentences, vocab_length, alpha = 0.1)
+    print("Probability of 'agriculture teacher ,' with smoothing of 0.1 is: ", probablity)

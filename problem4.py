@@ -19,7 +19,7 @@ if __name__ == "__main__":
     alpha = 0.1
 
     with codecs.open("brown_vocab_100.txt") as vocab:
-        # Load the indices dictionary.
+        # Load the indices' dictionary.
         word_index_dict = {}
         for i, line in enumerate(vocab):
             # Import part 1 code to build dictionary.
