@@ -9,6 +9,7 @@ DO NOT SHARE/DISTRIBUTE SOLUTIONS WITHOUT THE INSTRUCTOR'S PERMISSION
 """
 
 import numpy as np
+import json
 from sklearn.preprocessing import normalize
 from generate import GENERATE
 import codecs
@@ -41,7 +42,30 @@ if __name__ == "__main__":
         print(probs[word_index_dict["the"],word_index_dict["campaign"]], file=f1)
         print(probs[word_index_dict["anonymous"],word_index_dict["calls"]], file=f1)
 
+    # Calculating sentence probabilities and perplexities.
+    with open("toy_corpus.txt", "r") as f:
+        sentences = f.read().splitlines()
+    with open("unigram_probs.txt", "r") as f:
+        word_probs_dict = json.load(f)
+
+    sentprobs, perplexities = [], []
+    for sent in sentences:
+        words = sent.lower().strip().split(" ")
+        for i in range(len(words)):
+            if i==0:
+                sentprob = word_probs_dict[words[0]]
+            else:
+                sentprob *= probs[word_index_dict[words[i - 1]], word_index_dict[words[i]]]
+        sentprobs.append(sentprob)
+        perplexities.append(1/(pow(sentprob, 1.0/len(words))))
+        
+    print(sentprobs)
+    print(perplexities)
+    with open("bigram_eval.txt", "w") as f:
+        f.writelines([str(p) + "\n" for p in perplexities])
+        
     # Generate 10 sentences.
     sents = [GENERATE(word_index_dict, probs, "bigram", randint(5, 50), "<s>") + "\n" for _ in range(10)]
     with open("bigram_generation.txt", "w") as f:
         f.writelines(sents)
+

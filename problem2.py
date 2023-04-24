@@ -47,7 +47,25 @@ if __name__ == "__main__":
     print("%.8f" % word_probs_dict["all"])
     print("%.8f" % word_probs_dict["resolution"])
 
+    # Calculate sentence probabilities and perplexities.
+    with open("toy_corpus.txt", "r") as f:
+        sentences = f.read().splitlines()
+    sentprobs, perplexities = [], []
+    for sent in sentences:
+        sentprob = 1
+        words = sent.lower().strip().split(" ")
+        for word in words:
+            sentprob *= word_probs_dict[word]
+        sentprobs.append(sentprob)
+        perplexities.append(1/(pow(sentprob, 1.0/len(words))))
+    print(sentprobs)
+    print(perplexities)
+    with open("unigram_eval.txt", "w") as f:
+        f.writelines([str(p) + "\n" for p in perplexities])
+    
     # Generate 10 sentences.
     sents = [GENERATE(word_index_dict, word_probs_dict.values(), "unigram", randint(5, 50), "<s>") + "\n" for _ in range(10)]
     with open("unigram_generation.txt", "w") as f:
         f.writelines(sents)
+
+
