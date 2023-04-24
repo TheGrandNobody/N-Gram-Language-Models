@@ -20,7 +20,7 @@ if __name__ == "__main__":
     alpha = 0.1
 
     with codecs.open("brown_vocab_100.txt") as vocab:
-        # Load the indices' dictionary.
+        # Load the indices dictionary.
         word_index_dict = {}
         for i, line in enumerate(vocab):
             # Import part 1 code to build dictionary.
@@ -41,7 +41,7 @@ if __name__ == "__main__":
 
     # Writeout bigram probabilities.
     with open("smooth_probs.txt", "w") as f1:
-        print(probs[ word_index_dict["all"],word_index_dict["the"] ], file=f1)
+        print(probs[word_index_dict["all"],word_index_dict["the"]], file=f1)
         print(probs[word_index_dict["the"],word_index_dict["jury"]], file=f1)
         print(probs[word_index_dict["the"],word_index_dict["campaign"]], file=f1)
         print(probs[word_index_dict["anonymous"],word_index_dict["calls"]], file=f1)
@@ -68,14 +68,12 @@ if __name__ == "__main__":
 
     sentprobs, perplexities = [], []
     for sent in sentences:
+        sentprob = 1
         words = sent.lower().strip().split(" ")
-        for i in range(len(words)):
-            if i==0:
-                sentprob = word_probs_dict[words[0]]
-            else:
-                sentprob *= probs[word_index_dict[words[i - 1]], word_index_dict[words[i]]]
+        for i in range(1, len(words)):
+            sentprob *= probs[word_index_dict[words[i - 1]], word_index_dict[words[i]]]
         sentprobs.append(sentprob)
-        perplexities.append(1/(pow(sentprob, 1.0/len(words))))
+        perplexities.append(1/(pow(sentprob, 1.0/(len(words) - 1))))
         
     print(sentprobs)
     print(perplexities)
