@@ -15,7 +15,7 @@ def pmi(word1: str, word2: str, fdist: FreqDist, length: int, count: int) -> flo
         fdist (FreqDist): The frequency distribution of the corpus.
     """
     # Calculate the pmi
-    return math.log(count * length / fdist[word1] * fdist[word2])
+    return math.log(count * length / (fdist[word1] * fdist[word2]))
 
 def check_punct(word: str) -> bool:
     """ Checks if a given word is punctuation or made up of punctuation.
@@ -30,9 +30,9 @@ def check_punct(word: str) -> bool:
 
 if __name__ == "__main__":
     # Load the brown corpus
-    brown = corpus.brown.words()
+    brown = [w.strip().lower() for w in corpus.brown.words()]
     # Remove punctuation and combinations of punctuation from the corpus
-    clean_brown = [w for w in brown if check_punct(w)]
+    clean_brown = [w.strip().lower() for w in brown if check_punct(w)]
     # Convert the corpus to a frequency distribution
     fdist = FreqDist(clean_brown)
     # Count the occurence of each word pair in the corpus that has a frequency of 10 or more
@@ -42,6 +42,7 @@ if __name__ == "__main__":
         # A word at the end of a sentence is not considered paired with the word at the beginning of the next sentence
         if check_punct(brown[i]) and check_punct(brown[i + 1]) and fdist[brown[i]] > 9 and fdist[brown[i + 1]] > 9:
             pfdist[f"{brown[i]} {brown[i + 1]}"] += 1
+    print(pmi("the", "have", fdist, len(clean_brown), pfdist["the have"]))
     # Calculate the pmi for each word pair in pfdist
     pmis = sorted({k: pmi(k.split()[0], k.split()[1], fdist, len(clean_brown), v) for k, v in pfdist.items()}.items(), key=lambda x: x[1])
     # Save the results to a file
