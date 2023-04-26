@@ -42,7 +42,6 @@ if __name__ == "__main__":
         # A word at the end of a sentence is not considered paired with the word at the beginning of the next sentence
         if check_punct(brown[i]) and check_punct(brown[i + 1]) and fdist[brown[i]] > 9 and fdist[brown[i + 1]] > 9:
             pfdist[f"{brown[i]} {brown[i + 1]}"] += 1
-    print(pmi("the", "have", fdist, len(clean_brown), pfdist["the have"]))
     # Calculate the pmi for each word pair in pfdist
     pmis = sorted({k: pmi(k.split()[0], k.split()[1], fdist, len(clean_brown), v) for k, v in pfdist.items()}.items(), key=lambda x: x[1])
     # Save the results to a file
